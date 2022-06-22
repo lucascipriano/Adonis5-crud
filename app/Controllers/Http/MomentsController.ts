@@ -31,13 +31,14 @@ export default class MomentsController {
   }
 
   public async index() {
-    const moment = await Moment.all()
+    const moment = await Moment.query().preload('comments')
     return {
       data: moment,
     }
   }
   public async show({ params }: HttpContextContract) {
     const moment = await Moment.findOrFail(params.id)
+    await moment.load('comments')
     return {
       data: moment,
     }
